@@ -108,7 +108,7 @@ export const StateContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     let url = getUrl(
-      `http://localhost:4001/products?_limit=20&_page=${page}`,
+      `http://localhost:5000/products?limit=20&page=${page}`,
       sortby,
       sortbyType,
       genderName,

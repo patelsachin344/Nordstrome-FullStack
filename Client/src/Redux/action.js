@@ -25,9 +25,12 @@ export const getData = (url, setLength) => (dispatch) => {
   dispatch(getloaddata());
   fetch(`${url}`)
     .then((res) => {
-      setLength(Number(res.headers.get("X-Total-Count")));
       return res.json();
     })
-    .then((res) => dispatch(getsuccessdata(res)))
+    .then((res) => {
+      console.log(res);
+      setLength(res.count);
+      return dispatch(getsuccessdata(res.products));
+    })
     .catch(() => dispatch(geterrordata()));
 };

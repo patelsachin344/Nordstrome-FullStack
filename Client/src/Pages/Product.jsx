@@ -58,7 +58,7 @@ export const Product = () => {
   } = useContext(StateContext);
 
   products.map((ele) => (ele.count = 1));
-  // console.log(products);
+  console.log(products);
   // function for sorting
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -191,56 +191,71 @@ export const Product = () => {
         </Select>
       </Flex>
 
-      <SimpleGrid columns={[1, 2, 4]}>
-        {products.map((item) => (
-          <Box m="3%" p="3%" key={item.id + Date.now() + item.product}>
-            <Box className={styles.container}>
-              <Link to={`/ProductPage/${item.id}`}>
-                <Image
-                  className={styles.img}
-                  width="100%"
-                  m="auto"
-                  src={item.searchImage}
-                  alt="picture"
-                />
-              </Link>{" "}
-              <Box
-                className={styles.quickView}
-                onClick={() => handlequickViewData(item)}
-              >
-                <ProductModal item={item} />
+      {products.length ? (
+        <SimpleGrid columns={[1, 2, 4]}>
+          {products.map((item) => (
+            <Box m="3%" p="3%" key={item.id + Date.now() + item.product}>
+              <Box className={styles.container}>
+                <Link to={`/ProductPage/${item.id}`}>
+                  <Image
+                    className={styles.img}
+                    width="100%"
+                    m="auto"
+                    src={item.searchImage}
+                    alt="picture"
+                  />
+                </Link>{" "}
+                <Box
+                  className={styles.quickView}
+                  onClick={() => handlequickViewData(item)}
+                >
+                  <ProductModal item={item} />
+                </Box>
+              </Box>
+
+              <Flex width="80%" m="2% auto">
+                <Button bg="black" borderRadius="50%" m="3%" size="xs"></Button>
+                <Button bg="red" borderRadius="50%" m="3%" size="xs"></Button>
+                <Button bg="blue" borderRadius="50%" m="3%" size="xs"></Button>
+                <Button
+                  bg="yellow"
+                  borderRadius="50%"
+                  m="3%"
+                  size="xs"
+                ></Button>
+              </Flex>
+              <Box>{item.brand}</Box>
+              <Box>{item.product}</Box>
+              <Box color="red">{item.price} ₹ </Box>
+              <Box color="red">{item.discountDisplayLabel}</Box>
+              <Box textDecoration="line-through">{item.mrp} ₹ </Box>
+              <Box>
+                {Math.floor(item.rating) === 5 ? (
+                  <Box>&#9733;&#9733;&#9733;&#9733;&#9733;</Box>
+                ) : Math.floor(item.rating) === 4 ? (
+                  <Box>&#9733;&#9733;&#9733;&#9733;&#9734;</Box>
+                ) : Math.floor(item.rating) === 3 ? (
+                  <Box>&#9733;&#9733;&#9733;&#9734;&#9734;</Box>
+                ) : Math.floor(item.rating) === 2 ? (
+                  <Box>&#9733;&#9733;&#9734;&#9734;&#9734;</Box>
+                ) : Math.floor(item.rating) === 1 ? (
+                  <Box>&#9733;&#9734;&#9734;&#9734;&#9734;</Box>
+                ) : (
+                  <Box>&#9734;&#9734;&#9734;&#9734;&#9734;</Box>
+                )}{" "}
               </Box>
             </Box>
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Image
+          mb="4%"
+          src="https://freefrontend.com/assets/img/html-funny-404-pages/SVG-Animation-404-Page.gif"
+          alt=""
+        />
+        // https://freefrontend.com/assets/img/html-css-404-page-templates/Simple-Pure-CSS3-404-Error-Page.gif
+      )}
 
-            <Flex width="80%" m="2% auto">
-              <Button bg="black" borderRadius="50%" m="3%" size="xs"></Button>
-              <Button bg="red" borderRadius="50%" m="3%" size="xs"></Button>
-              <Button bg="blue" borderRadius="50%" m="3%" size="xs"></Button>
-              <Button bg="yellow" borderRadius="50%" m="3%" size="xs"></Button>
-            </Flex>
-            <Box>{item.brand}</Box>
-            <Box>{item.product}</Box>
-            <Box color="red">{item.price} ₹ </Box>
-            <Box color="red">{item.discountDisplayLabel}</Box>
-            <Box textDecoration="line-through">{item.mrp} ₹ </Box>
-            <Box>
-              {Math.floor(item.rating) === 5 ? (
-                <Box>&#9733;&#9733;&#9733;&#9733;&#9733;</Box>
-              ) : Math.floor(item.rating) === 4 ? (
-                <Box>&#9733;&#9733;&#9733;&#9733;&#9734;</Box>
-              ) : Math.floor(item.rating) === 3 ? (
-                <Box>&#9733;&#9733;&#9733;&#9734;&#9734;</Box>
-              ) : Math.floor(item.rating) === 2 ? (
-                <Box>&#9733;&#9733;&#9734;&#9734;&#9734;</Box>
-              ) : Math.floor(item.rating) === 1 ? (
-                <Box>&#9733;&#9734;&#9734;&#9734;&#9734;</Box>
-              ) : (
-                <Box>&#9734;&#9734;&#9734;&#9734;&#9734;</Box>
-              )}{" "}
-            </Box>
-          </Box>
-        ))}
-      </SimpleGrid>
       <Box textAlign="center">
         <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
           Prev
