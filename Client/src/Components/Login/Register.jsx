@@ -1,5 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
-import React, { useRef } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+} from "@mui/material";
+import React, { useEffect, useRef } from "react";
 import { OutlinedInput } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { InputAdornment } from "@mui/material";
@@ -9,35 +17,20 @@ import { VisibilityOff } from "@mui/icons-material";
 import "./Login.css";
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  registerError,
-  registerLoading,
-  registerSuccess,
-} from "../../Features/Register/actions";
-// import { Header } from "../Home/Header";
-// import { Footer } from "../Home/Footer";
-const initial={
-  email:"",
-  password:"",
-  first_name:"",
-  last_name:""
-}
+
+const initial = {
+  email: "",
+  password: "",
+  first_name: "",
+  last_name: "",
+};
 export const Register = () => {
   const [form, setForm] = useState(initial);
   const [email, setEmail] = useState(true);
   const [fName, setfName] = useState(true);
   const [lName, setlName] = useState(true);
+  const [data, setData] = useState("");
   const [password, setPassword] = useState(true);
-  const ref=useRef(null)
-
-  const { loading, register, error } = useSelector((state) => ({
-    loading: state.registerState.loading,
-    register: state.registerState.register,
-    error: state.registerState.error,
-  }));
-
-  const dispatch = useDispatch();
 
   const handlerRegisterChange = ({ target: { name, value } }) => {
     setForm({
@@ -50,43 +43,49 @@ export const Register = () => {
     setOpen(false);
   };
 
-  const handleClickOpen =async () => {
-   const res=await fetch("http://localhost:4001/userData")   
-   const res2=await res.json()
-   console.log(res2)
-   ref.current=  res2.findIndex((el) => el.email == form.email)
-   if(form.email==""||form.password==""||form.first_name==""||form.last_name==""){
-     setOpen(true);
-   }
-  else if (!form.email.match("[a-z0-9]+@[a-z]+.[a-z]{2,3}")) {
-      setEmail(false);
-    } else if (form.first_name.length < 1) {
-      setfName(false);
-    } else if (form.last_name.length < 1) {
-      setlName(false);
-    } else if (form.password.length < 6) {
-      setPassword(false);
-    } else if (ref.current >=0){
-      setOpen(true);
-    }
-    else {
-      dispatch(registerLoading());
-      fetch("http://localhost:4001/userData", {
-        method: "POST",
-        body: JSON.stringify(form),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const handleClickOpen = async () => {
+    // const res = await fetch("http://localhost:4001/userData");
+    // const res2 = await res.json();
+    // console.log(res2);
+    // ref.current = res2.findIndex((el) => el.email == form.email);
+    // if (
+    //   form.email === "" ||
+    //   form.password === "" ||
+    //   form.first_name === "" ||
+    //   form.last_name === ""
+    // ) {
+    //   setOpen(true);
+    // } else if (!form.email.match("[a-z0-9]+@[a-z]+.[a-z]{2,3}")) {
+    //   setEmail(false);
+    // } else if (form.first_name.length < 1) {
+    //   setfName(false);
+    // } else if (form.last_name.length < 1) {
+    //   setlName(false);
+    // } else if (form.password.length < 6) {
+    //   setPassword(false);
+    // } else {
+    fetch("http://localhost:5000/users/register", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res);
       })
-        .then((d) => d.json())
-        .then((res) => {
-          dispatch(registerSuccess(true));
-        })
-        .catch((err) => {
-          dispatch(registerError());
-        });
-    }
+      .catch((err) => {
+        console.log(err);
+      });
+    // }
   };
+  if (data.error) {
+    alert(data.error);
+    setData("");
+  }
+  console.log(form);
+  console.log(data.error);
 
   const [values, setValues] = React.useState({
     password: "",
@@ -109,7 +108,7 @@ export const Register = () => {
     event.preventDefault();
   };
 
-  if (register) {
+  if (data.user) {
     return <Navigate to={"/login"} />;
   }
 
@@ -137,7 +136,6 @@ export const Register = () => {
         <FormControl
           size="medium"
           sx={{ m: "auto", mt: "20px", mb: "10px", width: "350px" }}
-      
           variant="outlined"
           error={email === false}
           helperText="Incorrect entry."
@@ -239,19 +237,25 @@ export const Register = () => {
         <button onClick={handleClickOpen} className="signInButton">
           Create Account
         </button>
-        <Dialog
+        {/* <Dialog
           open={open}
           onClose={handleClose}
-          
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle width={'500px'} id="alert-dialog-title">
+          <DialogTitle width={"500px"} id="alert-dialog-title">
             {"Alert"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {ref.current >= 0 ? "Email Already Exist" : form.email == "" || form.password == "" || form.first_name == "" || form.last_name == "" ? "Please fill the all details":""}
+              {data.error
+                ? data.error 
+                : form.email === "" ||
+                  form.password === "" ||
+                  form.first_name === "" ||
+                  form.last_name === ""
+                ? "Please fill the all details"
+                : ""}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -259,7 +263,7 @@ export const Register = () => {
               OK
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
 
         <div className="staticTextTwo">
           Already have an account?

@@ -22,102 +22,90 @@ import {
   loginLoading,
   loginError,
   loginSuccess,
-  loginUserLoading,
-  loginUserSuccess,
-  loginUserError,
 } from "../../Features/Login/actions";
 import { useEffect, useState } from "react";
 import { registerSuccess } from "../../Features/Register/actions";
-import { FaBuromobelexperte } from "react-icons/fa";
+
 import { useContext } from "react";
 import { SignUpContex } from "../../Contex/SignupContex";
-// import { FormControl } from "@chakra-ui/react";
-const intial={
-  email:"",
-  password:""
-}
+
+const intial = {
+  email: "",
+  password: "",
+};
 export const Login = () => {
   const [form, setForm] = useState(intial);
   const [user, setUser] = useState([]);
+  const [data, setData] = useState();
+  const [err, setErr] = useState();
+  const [auth, setAuth] = useState();
 
-  const [logStatus, setStatus] = useState(false);
-
-  const { register } = useSelector((state) => ({
-    register: state.registerState.register,
-  }));
-
-  const { users, userData } = useSelector((state) => ({
+  const { userData } = useSelector((state) => ({
     users: state.loginState.users,
     userData: state.loginState.userData,
   }));
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
   const dispatch = useDispatch();
 
-  function findUser() {
-    let userDet = users.filter((el) => el.email === form.email);
-    console.log(userDet);
-    localStorage.setItem("userData", JSON.stringify(userDet));
-    setUser(userDet);
-  }
+  const login = () => {
+    fetch("http://localhost:5000/users/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => setData(res))
+      .catch((error) => setErr(error));
+  };
+  useEffect(() => {
+    getUsers();
+  }, [data]);
+
+  // console.log(userData, "UserData");
+
+  useEffect(() => {
+    if (data) {
+      if (data.error) {
+        alert(data.error);
+        setData("");
+      } else {
+        console.log(data, "token add");
+        localStorage.setItem("token", JSON.stringify(data));
+      }
+    }
+  }, [data]);
+
+  const token = JSON.parse(localStorage.getItem("token")) || "";
+
+  let autho = "Bearer " + token.token;
 
   function getUsers() {
     dispatch(loginLoading());
-    fetch("http://localhost:4001/userData")
-      .then((d) => d.json())
-      .then((res) => {
-        dispatch(loginSuccess(res));
+    if (data) {
+      fetch("http://localhost:5000/users/logedin", {
+        method: "GET",
+        headers: {
+          Authorization: autho,
+        },
       })
-      .catch((err) => {
-        dispatch(loginError());
-      });
+        .then((res) => res.json())
+        .then((res) => {
+          dispatch(loginSuccess(res));
+          if (res.user) {
+            localStorage.setItem("userData", JSON.stringify(res.user));
+          }
+        })
+        .catch((err) => {
+          dispatch(loginError(err));
+        });
+    }
   }
 
-  // function postLoginData() {
-  //   dispatch(loginUserLoading());
-  //   fetch("http://localhost:4001/userData", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       email: form.email,
-  //       password: form.password,
-  //       otp: Math.floor(1000 + Math.random() * 9000),
-  //       first_name: user[0].first_name,
-  //     }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((d) => d.json())
-  //     .then((res) => {
-  //       dispatch(loginUserSuccess(res));
-  //     })
-  //     .catch((err) => {
-  //       dispatch(loginUserError());
-  //     });
-  // }
-
-  // const handleSubmit = () => {
-  //
-  // };
-  const [open, setOpen] = React.useState(false);
-  const { handleMiddle }=useContext(SignUpContex)
+  const { handleLogin } = useContext(SignUpContex);
   const handleClickOpen = () => {
-    if (user.length === 0) {
-      setOpen(true);
-    } else if (user[0].password != form.password) {
-      setOpen(true);
-    } else {
-      // postLoginData();
-      handleMiddle()
-      setStatus(true);
-    }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+    login();
   };
 
   const handleRegister = () => {
@@ -129,10 +117,9 @@ export const Login = () => {
       ...form,
       [name]: value,
     });
-    findUser();
   };
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
@@ -140,7 +127,7 @@ export const Login = () => {
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
     setForm({ ...form, [prop]: event.target.value });
-    findUser();
+    // findUser();
   };
 
   const handleClickShowPassword = () => {
@@ -154,9 +141,8 @@ export const Login = () => {
     event.preventDefault();
   };
 
-  if (logStatus) {
-    localStorage.setItem("userData", JSON.stringify(user[0]));
-    localStorage.setItem("logedin", true);
+  if (userData.user) {
+    handleLogin();
     return <Navigate to={"/"} />;
   }
 
@@ -227,14 +213,13 @@ export const Login = () => {
         <button onClick={handleClickOpen} className="signInButton">
           Sign in
         </button>
-        <Dialog
+        {/* <Dialog
           open={open}
           onClose={handleClose}
-         
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle width={'500px'} id="alert-dialog-title">
+          <DialogTitle width={"500px"} id="alert-dialog-title">
             {"Alert"}
           </DialogTitle>
           <DialogContent>
@@ -253,7 +238,7 @@ export const Login = () => {
               Try again
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
 
         <div className="staticTextTwo">
           Dont have an account?

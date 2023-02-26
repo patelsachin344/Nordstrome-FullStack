@@ -3,20 +3,13 @@ import {
   Button,
   Divider,
   Flex,
-  Heading,
-  Input,
   Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import styles from "./navbarSignUp.module.css";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  HamburgerIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   AiOutlineShoppingCart,
   AiOutlineHeart,
@@ -25,8 +18,6 @@ import {
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
@@ -42,19 +33,27 @@ import { useState } from "react";
 import stylesSign from "./Signin.module.css";
 import { useContext } from "react";
 import { SignUpContex } from "../../Contex/SignupContex";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../../Features/Login/actions";
 function SignInButton() {
-  const logedin = localStorage.getItem("logedin");
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
-  console.log(userData + "kashi");
-  const { handleLogin } = useContext(SignUpContex);
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => ({
+    userData: state.loginState.userData,
+  }));
+
+  console.log(userData.user, "from signupButton");
+
+  const { handleMiddle } = useContext(SignUpContex);
+
   const handleLogout = () => {
     localStorage.clear();
-    handleLogin();
+    handleMiddle();
+    dispatch(loginSuccess(""));
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
- 
+
   return (
     <Box
       display={"flex"}
@@ -254,7 +253,9 @@ function SignInButton() {
               <BsPersonFill fontSize={"25px"} />
             </Box>
             <Text display={{ base: "none", md: "block" }}>
-              {logedin ? "Hi" + " ," + userData.first_name : "Sign in"}
+              {userData.user
+                ? "Hi" + " ," + userData.user.first_name
+                : "Sign in"}
             </Text>
             <ChevronDownIcon
               display={{ base: "none", md: "block" }}
@@ -269,13 +270,13 @@ function SignInButton() {
             className={styles.dropdownContent}
           >
             <VStack align={"start"}>
-              {logedin ? (
+              {userData.user ? (
                 <Flex justifyContent={"space-between"} width={"100%"}>
                   <Text fontWeight={"700"}>
-                    {userData.first_name}'s Account
+                    {userData.user.first_name}'s Account
                   </Text>
                   <Text
-                    onClick={handleLogout}
+                    onClick={() => handleLogout()}
                     _hover={{
                       cursor: "pointer",
                       backgroundColor: "transparent",
@@ -302,7 +303,7 @@ function SignInButton() {
               )}
 
               <Text
-                display={logedin ? "none" : "flex"}
+                display={userData.user ? "none" : "flex"}
                 fontWeight={"700"}
                 fontSize={"14px"}
               >
@@ -520,8 +521,8 @@ function SignInButton() {
           </Box>
         </Box>
         <Box className={styles.dropdown} float={"right"}>
-          <Link to={logedin ? "/cartpage" :"/login"}>
-          <AiOutlineShoppingCart fontSize={"25px"} />
+          <Link to={userData.user ? "/cartpage" : "/login"}>
+            <AiOutlineShoppingCart fontSize={"25px"} />
           </Link>
         </Box>
       </Box>

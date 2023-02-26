@@ -1,26 +1,25 @@
-import {
-  Box,
-  ChakraProvider,
-  extendTheme,
-  Flex,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
-import { useContext } from "react";
+
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { SignUpContex } from "../../Contex/SignupContex";
 
 function MiddelText() {
-  const logedin = localStorage.getItem("logedin");
-  const { userLogin } = useContext(SignUpContex);
+  const { userData } = useSelector((state) => ({
+    userData: state.loginState.userData,
+  }));
+
   return (
     <ChakraProvider>
-      <Box width={'100%'} m='auto' display={logedin && !userLogin ? "none" : "flex"}>
-        <Flex mb={"50px"} width={'100%'} justifyContent={{base:'center',md:"space-between"}}>
+      <Box width={"100%"} m="auto" display={userData.user ? "none" : "flex"}>
+        <Flex
+          mb={"50px"}
+          width={"100%"}
+          justifyContent={{ base: "center", md: "space-between" }}
+        >
           <Image
             height="14px"
-                      display={{ base: "none", md: "flex" }}
+            display={{ base: "none", md: "flex" }}
             src="https://n.nordstrommedia.com/id/c30eb052-a9da-4529-95ed-0d1568cc55ad.png?h=22&w=536"
           ></Image>
           <Box

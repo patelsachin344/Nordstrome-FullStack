@@ -9,7 +9,12 @@ import {
   LOGIN_USER_SUCCESS,
 } from "./actionTypes";
 
-const init = { loading: false, users: [], userData: [], error: false };
+const init = {
+  loading: false,
+  user: [],
+  userData: "",
+  error: false,
+};
 export const reducer2 = (state = init, { type, payload }) => {
   switch (type) {
     case LOGIN_LOADING:
@@ -22,7 +27,7 @@ export const reducer2 = (state = init, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        users: payload,
+        userData: payload,
       };
 
     case LOGIN_USER_LOADING:

@@ -1,7 +1,7 @@
 import React from "react";
 import Styled from "./styles.ts";
 import NewArivelDataArray from "./NewArivelDataArray";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 function Scroling() {
   const contentWrapper = React.useRef(null);
@@ -74,7 +74,10 @@ function Scroling() {
           />
         </Styled.Button>
       </Flex>
-      <Image mt={'20px'} src="https://n.nordstrommedia.com/id/5ec3d3de-9e8c-4317-bc28-3b42b503268e.png?h=17&w=1608" />
+      <Image
+        mt={"20px"}
+        src="https://n.nordstrommedia.com/id/5ec3d3de-9e8c-4317-bc28-3b42b503268e.png?h=17&w=1608"
+      />
     </Styled.Container>
   );
 }

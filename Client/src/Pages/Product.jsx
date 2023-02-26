@@ -10,17 +10,13 @@ import {
   SimpleGrid,
   Skeleton,
   Spinner,
-  Stack,
   Text,
   Drawer,
   DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Input,
   Grid,
   SkeletonText,
   SkeletonCircle,
@@ -39,9 +35,14 @@ export const handlequickViewData = (item) => {
 
   localStorage.setItem("quickViewData", JSON.stringify(quickViewData));
 };
-let cartArray = JSON.parse(localStorage.getItem("CartData")) || [];
+// let cartArray = JSON.parse(localStorage.getItem("CartData")) || [];
 
 export const Product = () => {
+  // const { userData } = useSelector((state) => ({
+  //   userData: state.loginState.userData,
+  // }));
+  // console.log(userData, "from product component");
+
   const { products, loading, error } = useSelector((state) => state.product);
 
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -9,7 +9,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaShuttleVan } from "react-icons/fa";
 import { GoGift } from "react-icons/go";
 import payment from "./img/payment.png";
@@ -18,8 +18,27 @@ import { StateContext } from "../../Contex/StateContext";
 
 import { Link } from "react-router-dom";
 import { AddShow } from "../../Components/AddShow";
+import { useDispatch, useSelector } from "react-redux";
+import { getData } from "../../Redux/action";
 export const CartBag = () => {
   // data get in localStorage for bag by click add to cart
+  const { cartData } = useSelector((state) => ({
+    cartData: state.cart.cartData,
+  }));
+
+  // const dispatch = useDispatch();
+  useEffect(() => {
+    getdata("63fa734972d8d6374b43d0a3");
+  }, []);
+
+  const getdata = (id) => {
+    fetch(`http://localhost:5000/carts/${id}`)
+      .then((res) => res.json())
+      .then((res) => console.log(res, "form action"));
+    // .catch(() => dispatch));
+  };
+
+  console.log(cartData, "bagpage");
   let cartDataArray = JSON.parse(localStorage.getItem("CartData")) || [];
 
   // initiae array which i get  from cartDataArray

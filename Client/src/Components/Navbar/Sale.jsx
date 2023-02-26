@@ -1,23 +1,22 @@
 import {
   Box,
-  Button,
   Divider,
-  Flex,
   Grid,
   GridItem,
-  HStack,
   Image,
-   
-  ListItem,
   Text,
-  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function Sale() { 
-    const logedin = localStorage.getItem("logedin");
+function Sale() {
+  const { userData } = useSelector((state) => ({
+    userData: state.loginState.userData,
+  }));
+
+  console.log(userData.user);
   return (
     <Box padding={"25px"} height={"700px"}>
       <Grid templateColumns={"repeat(6,1fr)"}>
@@ -624,8 +623,9 @@ function Sale() {
                   touchAction: "manipulation",
                 }}
               >
-                
-             <Link to={logedin ? '/ProductPage' : '/login'}  >All Sale</Link>
+                <Link to={userData.user ? "/ProductPage" : "/login"}>
+                  All Sale
+                </Link>
               </Text>
             </VStack>
           </VStack>
