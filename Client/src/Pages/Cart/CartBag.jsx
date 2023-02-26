@@ -5,7 +5,6 @@ import {
   Checkbox,
   Flex,
   Image,
-  Select,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -19,26 +18,19 @@ import { StateContext } from "../../Contex/StateContext";
 import { Link } from "react-router-dom";
 import { AddShow } from "../../Components/AddShow";
 import { useDispatch, useSelector } from "react-redux";
-import { getData } from "../../Redux/action";
+import { deleteData, getData, updateData } from "../../Features/cart/action";
+
 export const CartBag = () => {
-  // data get in localStorage for bag by click add to cart
+  const dispatch = useDispatch();
+  // data get in redux for bag by click add to cart
+  useEffect(() => {
+    dispatch(getData("63fa72e0f856d920bc745cf1"));
+  }, []);
   const { cartData } = useSelector((state) => ({
     cartData: state.cart.cartData,
   }));
 
-  // const dispatch = useDispatch();
-  useEffect(() => {
-    getdata("63fa734972d8d6374b43d0a3");
-  }, []);
-
-  const getdata = (id) => {
-    fetch(`http://localhost:5000/carts/${id}`)
-      .then((res) => res.json())
-      .then((res) => console.log(res, "form action"));
-    // .catch(() => dispatch));
-  };
-
-  console.log(cartData, "bagpage");
+  // console.log(cartData.success, "bagpage");
   let cartDataArray = JSON.parse(localStorage.getItem("CartData")) || [];
 
   // initiae array which i get  from cartDataArray
@@ -55,16 +47,10 @@ export const CartBag = () => {
   const { bagLength, setBagLength } = useContext(StateContext);
   setBagLength(totleItem);
 
-  // for render page to show increment and decrement
-  const [counting, setCounting] = useState(0);
-
   // remove data from bag data
-  const handleRemove = (ind) => {
-    console.log(ind);
-    const removeData = cartDataArray.filter((item) => item.id !== ind);
-    console.log(removeData);
-    setData(removeData);
-    localStorage.setItem("CartData", JSON.stringify(removeData));
+  const handleRemove = (cartId) => {
+    dispatch(deleteData(cartId, "63fa72e0f856d920bc745cf1"));
+    console.log(cartId, "CartData deleted");
   };
 
   let laterBagArray = JSON.parse(localStorage.getItem("laterBag")) || [];
@@ -79,23 +65,17 @@ export const CartBag = () => {
   };
 
   // for decreament quantity of products in cart
-  const handleDecrement = (index) => {
-    data[index].count--;
-    setData(data);
-    localStorage.setItem("CartData", JSON.stringify(data));
-    setCounting(data[index].count);
+  const handleDecrement = (id, count) => {
+    dispatch(updateData(id, --count, "63fa72e0f856d920bc745cf1"));
   };
 
   // for increment quantity of products in cart
-  const handleIncreament = (index) => {
-    data[index].count++;
-    setData(data);
-    localStorage.setItem("CartData", JSON.stringify(data));
-    setCounting(data[index].count);
+  const handleIncreament = (id, count) => {
+    dispatch(updateData(id, ++count, "63fa72e0f856d920bc745cf1"));
   };
 
   // for showing this when  data is not available
-  if (bagLength <= 0) {
+  if (!cartData.success) {
     return (
       <ChakraProvider>
         <Box>
@@ -149,7 +129,7 @@ export const CartBag = () => {
             <Flex alignItems="center">
               <FaShuttleVan />
               <Text fontSize="1.5rem" p="0 1%">
-                Delivery ({bagLength} items) to{" "}
+                Delivery ({cartData.success.length} items) to{" "}
                 <span className={style.blueColore}>India</span>
               </Text>
             </Flex>
@@ -158,41 +138,57 @@ export const CartBag = () => {
         </Box>
         <hr />
 
-        {data.map((item, index) => (
-          <Box fontSize="0.8em" key={item.id + Date.now() + Math.random()}>
-            <Box display="none"> {(totlePrice += item.price * item.count)}</Box>
+        {cartData.success.map((item, index) => (
+          <Box
+            fontSize="0.8em"
+            key={item.products.id + Date.now() + Math.random()}
+          >
+            <Box display="none">
+              {" "}
+              {(totlePrice += item.products.price * item.products.count)}
+            </Box>
             <SimpleGrid columns={[1, null, 2]} gap="2%" m="2% 0">
               <Flex>
                 <Box m="5% 0">
-                  <Image height={150} src={item.searchImage} />
+                  <Image height={150} src={item.products.searchImage} />
                 </Box>
                 <Box m="0 3%">
-                  <Text m="5% 0">{item.product}</Text>
-                  <Text>Size: {item.sizes}</Text>
-                  <Text>Brand: {item.brand}</Text>
-                  <Text>Item: {item.id}</Text>
+                  <Text m="5% 0">{item.products.product}</Text>
+                  <Text>Size: {item.products.sizes}</Text>
+                  <Text>Brand: {item.products.brand}</Text>
+                  <Text>Item: {item.products.id}</Text>
 
                   <Flex margin="3% 1%">
                     <Button
-                      disabled={item.count === 1}
-                      onClick={() => handleDecrement(index)}
+                      disabled={item.products.count === 1}
+                      onClick={() =>
+                        handleDecrement(item._id, item.products.count)
+                      }
                     >
                       -
                     </Button>
-                    <Button>{item.count}</Button>
-                    <Button onClick={() => handleIncreament(index)}>+</Button>
+                    <Button>{item.products.count}</Button>
+                    <Button
+                      onClick={() =>
+                        handleIncreament(item._id, item.products.count)
+                      }
+                    >
+                      +
+                    </Button>
                   </Flex>
 
                   <Flex gap="5%" fontSize={18}>
                     <button
                       className={style.blueColore}
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(item._id)}
                     >
                       Remove
                     </button>
                     <button
                       className={style.blueColore}
-                      onClick={() => handleLater(item, item.id)}
+                      onClick={() =>
+                        handleLater(item.products, item.products.id)
+                      }
                     >
                       Save for later
                     </button>
@@ -227,7 +223,7 @@ export const CartBag = () => {
                   </label>
                 </Box>
                 <Box textAlign={"center"} m="3%">
-                  ₹{item.price * item.count}
+                  ₹{item.products.price * item.products.count}
                 </Box>
               </Flex>
             </SimpleGrid>

@@ -6,16 +6,15 @@ const cartSchema = new mongoose.Schema({
     searchImage: String,
     images: Array,
     product: String,
-    sizes: String,
+    sizes: Array,
     brand: String,
     price: String,
     mrp: String,
     count: String,
     discountDisplayLabel: String,
+    count: { type: Number, default: 1 },
   },
-  userId: {
-    _id: mongoose.Schema.Types.ObjectId,
-  },
+  userId: mongoose.Schema.Types.ObjectId,
 });
 
 const Cart = mongoose.model("carts", cartSchema);

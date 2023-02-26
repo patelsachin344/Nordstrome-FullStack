@@ -1,4 +1,11 @@
-const { Cart_Load, Cart_Success, Cart_Error } = require("./actionType");
+const {
+  Cart_Load,
+  Cart_Success,
+  Cart_Error,
+  Cart_Adding,
+  Cart_Updating,
+  Cart_Deleting,
+} = require("./actionType");
 
 const init = {
   load: false,
@@ -12,7 +19,16 @@ export const cartReducer = (state = init, action) => {
       return { ...state, load: true };
     }
     case Cart_Success: {
-      return { state: { ...state, success: action.payload } };
+      return { ...state, cartData: action.payload };
+    }
+    case Cart_Adding: {
+      return state;
+    }
+    case Cart_Updating: {
+      return state;
+    }
+    case Cart_Deleting: {
+      return state;
     }
     case Cart_Error: {
       return { ...state, error: true };

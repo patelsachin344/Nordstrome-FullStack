@@ -1,4 +1,9 @@
-const { addCart, getCart } = require("../Controllers/cart.controller");
+const {
+  addCart,
+  getCart,
+  updateCart,
+  deleteCart,
+} = require("../Controllers/cart.controller");
 
 const router = require("express").Router();
 
@@ -23,6 +28,31 @@ router.post("/:id", async (req, res) => {
   } catch (error) {
     res.status(400).send({
       error: error,
+    });
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { count } = req.body;
+    const data = await updateCart(id, count);
+    res.status(200).send({ success: data });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await deleteCart(id);
+    res.status(200).send({ success: data });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
     });
   }
 });

@@ -2,25 +2,45 @@ const Cart = require("../Models/cart.model");
 
 const getCart = async (id) => {
   const cartData = await Cart.find({
-    "userId._id": id,
+    userId: id,
+  });
+  return cartData;
+};
+const getOneCart = async (id) => {
+  const cartData = await Cart.find({
+    userId: id,
   });
   return cartData;
 };
 
 const addCart = async (id, body) => {
   const userCartData = await getCart(id);
-
+  // console.log(body);
   let res;
   if (userCartData) {
-    res = userCartData.filter((el) => el.products.id === body.products.id);
-  }
-  let data;
-
-  if (res.length === 0) {
-    return (data = await Cart.create(body));
+    res = userCartData.filter((el) => el.products.id == body.products.id);
   }
 
-  return res;
+  if (res.length <= 0) {
+    return await Cart.create(body);
+  }
+
+  return "Data already exists";
 };
 
-module.exports = { getCart, addCart };
+const updateCart = async (id, count) => {
+  const getData = await Cart.findById(id);
+  console.log(count, "cart");
+  const data = await getData.updateOne(
+    { "products.count": count },
+    { new: true }
+  );
+  return data;
+};
+
+const deleteCart = async (id) => {
+  const data = await Cart.findByIdAndDelete(id);
+  return data;
+};
+
+module.exports = { getCart, addCart, updateCart, deleteCart };

@@ -44,7 +44,7 @@ export const SignUpConetexProvide = ({ children }) => {
     getUser();
   }, []);
 
-  console.log(userData, "from context");
+  // console.log(userData, "from context");
 
   return (
     <SignUpContex.Provider value={{ userLogin, handleLogin, handleMiddle }}>

@@ -2,7 +2,6 @@ import { StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  ChakraProvider,
   HStack,
   Image,
   Modal,
@@ -15,24 +14,21 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useContext, useEffect, useState } from "react";
 import { BsFillHandbagFill } from "react-icons/bs";
 import Carousel from "react-elastic-carousel";
 
-import { useParams } from "react-router-dom";
-import { StateContext } from "../Contex/StateContext";
+import { useDispatch } from "react-redux";
+import { createData } from "../Features/cart/action";
 
 export const ProductModal = ({ item }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const dispatch = useDispatch();
   let quickViewData = JSON.parse(localStorage.getItem("quickViewData"));
-  // const [item, setItem] = useState(quickViewData);
-
-  let cartArray = JSON.parse(localStorage.getItem("CartData")) || [];
 
   const handleCartData = () => {
-    cartArray.push(quickViewData);
-    localStorage.setItem("CartData", JSON.stringify(cartArray));
+    console.log("form product model");
+    dispatch(createData("63fa72e0f856d920bc745cf1", quickViewData));
+
     onclose();
   };
   // console.log(quickViewData);

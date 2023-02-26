@@ -5,7 +5,7 @@ const productRouter = express();
 
 productRouter.get("/", async (req, res) => {
   const { page, limit, gender, brand, _sort, _order } = req.query;
-  console.log(req.query);
+  // console.log(req.query);
   try {
     const { product, count } = await getProduct(
       page,

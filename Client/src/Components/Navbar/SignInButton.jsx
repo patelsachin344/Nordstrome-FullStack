@@ -41,7 +41,7 @@ function SignInButton() {
     userData: state.loginState.userData,
   }));
 
-  console.log(userData.user, "from signupButton");
+  // console.log(userData.user, "from signupButton");
 
   const { handleMiddle } = useContext(SignUpContex);
 
