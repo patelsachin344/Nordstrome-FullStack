@@ -17,17 +17,20 @@ import {
 import { BsFillHandbagFill } from "react-icons/bs";
 import Carousel from "react-elastic-carousel";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createData } from "../Features/cart/action";
 
 export const ProductModal = ({ item }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   let quickViewData = JSON.parse(localStorage.getItem("quickViewData"));
+  const { userData } = useSelector((state) => ({
+    userData: state.loginState.userData,
+  }));
 
   const handleCartData = () => {
-    console.log("form product model");
-    dispatch(createData("63fa72e0f856d920bc745cf1", quickViewData));
+    // console.log("form product model");
+    dispatch(createData(userData.user._id, quickViewData));
 
     onclose();
   };

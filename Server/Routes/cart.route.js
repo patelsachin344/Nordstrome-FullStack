@@ -3,6 +3,7 @@ const {
   getCart,
   updateCart,
   deleteCart,
+  deleteAllCart,
 } = require("../Controllers/cart.controller");
 
 const router = require("express").Router();
@@ -49,6 +50,18 @@ router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = await deleteCart(id);
+    res.status(200).send({ success: data });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+router.delete("/deleteAll/:userId", async (req, res) => {
+  try {
+    const id = req.params.userId;
+    const data = await deleteAllCart(id);
     res.status(200).send({ success: data });
   } catch (error) {
     res.status(400).send({

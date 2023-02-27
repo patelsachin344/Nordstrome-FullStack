@@ -14,8 +14,6 @@ import { StateContextProvider } from "./Contex/StateContext";
 import store from "./store";
 import { SignUpConetexProvide } from "./Contex/SignupContex";
 
-
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

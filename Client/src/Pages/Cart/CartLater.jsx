@@ -1,47 +1,37 @@
 import { Box, Button, Flex, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import payment from "./img/payment.png";
 import style from "./Cart.module.css";
-import React, { useContext } from "react";
-import { useState } from "react";
-import { StateContext } from "../../Contex/StateContext";
+import React from "react";
+
 import { Link } from "react-router-dom";
 import { AddShow } from "../../Components/AddShow";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteLater } from "../../Features/later/action";
+import { createData } from "../../Features/cart/action";
 
 export const CartLater = () => {
-  // for get data in advertisements
+  const { laterData, userData } = useSelector((state) => ({
+    laterData: state.later.laterData,
+    userData: state.loginState.userData,
+  }));
+  // console.log(laterData, "laterData");
 
-  // data get in localStorage for later by bag
-  let LaterDataArray = JSON.parse(localStorage.getItem("laterBag")) || [];
-  // initiae array which i get  from LaterDataArray
-  const [data, setData] = useState(LaterDataArray);
-
-  // console.log(data);
-  // for get length of data
-  let totleItem = LaterDataArray.length;
-
-  //   length of later data send to cart page compound for showing length in tab
-  const { laterBagLen, setLaterBagLen } = useContext(StateContext);
-  setLaterBagLen(totleItem);
+  const dispatch = useDispatch();
 
   // remove data from later data
-  const handleRemove = (id) => {
-    const removeData = LaterDataArray.filter((item) => item.id !== id);
-    setData(removeData);
-    localStorage.setItem("laterBag", JSON.stringify(removeData));
+  const handleRemove = (laterId) => {
+    dispatch(deleteLater(laterId, userData.user._id));
   };
 
-  // again moveData to localStorage and go bag data  also removeData from localStorage
-  let MoveToBag = JSON.parse(localStorage.getItem("CartData")) || [];
-  const handleMoveBag = (item, id) => {
-    const MoveBag = LaterDataArray.filter((item) => item.id !== id);
-    setData(MoveBag);
-    MoveToBag.push(item);
-    localStorage.setItem("laterBag", JSON.stringify(MoveBag));
-    localStorage.setItem("CartData", JSON.stringify(MoveToBag));
+  // again moveData to cartData and go bag data  also removeData from laterData
+
+  const handleMoveBag = (item, laterId) => {
+    dispatch(createData(userData.user._id, item));
+    dispatch(deleteLater(laterId, userData.user._id));
   };
 
   // for showing this when data is not available
-  if (laterBagLen <= 0) {
+  if (!laterData.success) {
     return (
       <Box>
         <Box m="3% 0">
@@ -85,29 +75,32 @@ export const CartLater = () => {
       </Box>
       <hr />
 
-      {data.map((item) => (
-        <Box fontSize="0.8em" key={item.id + Date.now() + Math.random()}>
+      {laterData.success.map((item) => (
+        <Box
+          fontSize="0.8em"
+          key={item.products.id + Date.now() + Math.random()}
+        >
           <SimpleGrid columns={[1, null, 2]} gap="2%" m="2% 0">
             <Flex>
               <Box m="5% 0">
-                <Image height={150} src={item.searchImage} />
+                <Image height={150} src={item.products.searchImage} />
               </Box>
               <Box m="0 3%">
-                <Text m="5% 0">{item.product}</Text>
-                <Text>Size: {item.sizes}</Text>
-                <Text>Brand: {item.brand}</Text>
-                <Text>Item: {item.id}</Text>
+                <Text m="5% 0">{item.products.product}</Text>
+                <Text>Size: {item.products.sizes}</Text>
+                <Text>Brand: {item.products.brand}</Text>
+                <Text>Item: {item.products.id}</Text>
 
                 <Flex gap="5%" margin="10% 0" fontSize={18}>
                   <button
                     className={style.blueColore}
-                    onClick={() => handleRemove(item.id)}
+                    onClick={() => handleRemove(item._id)}
                   >
                     Remove
                   </button>
                   <button
                     className={style.blueColore}
-                    onClick={() => handleMoveBag(item, item.id)}
+                    onClick={() => handleMoveBag(item.products, item._id)}
                   >
                     Move to bag
                   </button>
@@ -115,9 +108,9 @@ export const CartLater = () => {
               </Box>
             </Flex>
             <Flex justifyContent="space-around" alignItems="center">
-              <Box>Qty:{item.count}</Box>
+              <Box>Qty:{item.products.count}</Box>
               <Box textAlign={"center"} m="3%">
-                ₹{item.price * item.count}
+                ₹{item.products.price * item.products.count}
               </Box>
             </Flex>
           </SimpleGrid>

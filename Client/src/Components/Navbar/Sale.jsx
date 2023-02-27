@@ -16,7 +16,7 @@ function Sale() {
     userData: state.loginState.userData,
   }));
 
-  console.log(userData.user);
+  // console.log(userData.user);
   return (
     <Box padding={"25px"} height={"700px"}>
       <Grid templateColumns={"repeat(6,1fr)"}>

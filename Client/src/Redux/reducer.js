@@ -1,33 +1,48 @@
-import { GetErrorData, GetLoadData, GetSuccessData } from "./action";
+import {
+  GetErrorData,
+  GetLoadData,
+  GetOneSuccessData,
+  GetSuccessData,
+} from "./action";
 
 const initialState = {
   loading: false,
   error: false,
   products: [],
+  product: {},
 };
 
 export const productReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GetSuccessData: {
       return {
+        ...state,
         loading: false,
         error: false,
         products: payload,
       };
     }
+    case GetOneSuccessData: {
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        product: payload,
+      };
+    }
 
     case GetLoadData: {
       return {
+        ...state,
         loading: true,
         error: false,
-        products: [],
       };
     }
     case GetErrorData: {
       return {
+        ...state,
         loading: false,
         error: true,
-        products: [],
       };
     }
 

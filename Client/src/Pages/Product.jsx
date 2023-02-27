@@ -58,7 +58,7 @@ export const Product = () => {
     setPage,
   } = useContext(StateContext);
 
-  products.map((ele) => (ele.count = 1));
+  // products.map((ele) => (ele.count = 1));
   console.log(products);
   // function for sorting
   const handleChange = (e) => {
@@ -197,7 +197,7 @@ export const Product = () => {
           {products.map((item) => (
             <Box m="3%" p="3%" key={item.id + Date.now() + item.product}>
               <Box className={styles.container}>
-                <Link to={`/ProductPage/${item.id}`}>
+                <Link to={`/ProductPage/${item._id}`}>
                   <Image
                     className={styles.img}
                     width="100%"

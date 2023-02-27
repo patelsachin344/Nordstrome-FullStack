@@ -104,4 +104,9 @@ const getProduct = async (page, limit, gender, brand, _sort, _order) => {
   return data;
 };
 
-module.exports = { getProduct };
+const getOneProduct = async (id) => {
+  const data = await productModel.findById(id);
+  return data;
+};
+
+module.exports = { getProduct, getOneProduct };

@@ -8,74 +8,51 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
 import { FaShuttleVan } from "react-icons/fa";
 import { GoGift } from "react-icons/go";
 import payment from "./img/payment.png";
 import style from "./Cart.module.css";
-import { StateContext } from "../../Contex/StateContext";
 
 import { Link } from "react-router-dom";
 import { AddShow } from "../../Components/AddShow";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteData, getData, updateData } from "../../Features/cart/action";
+import { deleteData, updateData } from "../../Features/cart/action";
+import { createLater } from "../../Features/later/action";
 
 export const CartBag = () => {
   const dispatch = useDispatch();
   // data get in redux for bag by click add to cart
-  useEffect(() => {
-    dispatch(getData("63fa72e0f856d920bc745cf1"));
-  }, []);
-  const { cartData } = useSelector((state) => ({
+  const { cartData, userData } = useSelector((state) => ({
     cartData: state.cart.cartData,
+    userData: state.loginState.userData,
   }));
 
-  // console.log(cartData.success, "bagpage");
-  let cartDataArray = JSON.parse(localStorage.getItem("CartData")) || [];
-
-  // initiae array which i get  from cartDataArray
-  const [data, setData] = useState(cartDataArray);
-
-  // for get length of data
-  let totleItem = cartDataArray.length;
-  // for get totle price in checkout button
-
   let totlePrice = 0;
-  console.log(totlePrice);
-
-  //   length of bag data send to cart page compound for showing length in tab
-  const { bagLength, setBagLength } = useContext(StateContext);
-  setBagLength(totleItem);
 
   // remove data from bag data
   const handleRemove = (cartId) => {
-    dispatch(deleteData(cartId, "63fa72e0f856d920bc745cf1"));
-    console.log(cartId, "CartData deleted");
+    dispatch(deleteData(cartId, userData.user._id));
   };
 
-  let laterBagArray = JSON.parse(localStorage.getItem("laterBag")) || [];
-
-  //  SaveData to localStorage and go later data  also removeData from localStorage
-  const handleLater = (item, id) => {
-    const laterBag = cartDataArray.filter((item) => item.id !== id);
-    setData(laterBag);
-    laterBagArray.push(item);
-    localStorage.setItem("CartData", JSON.stringify(laterBag));
-    localStorage.setItem("laterBag", JSON.stringify(laterBagArray));
+  //  SaveData to laterData  also removeData from cartData
+  const handleLater = (item, cartId) => {
+    dispatch(createLater(userData.user._id, item));
+    dispatch(deleteData(cartId, userData.user._id));
   };
+  console.log(cartData, "CartData moved");
 
   // for decreament quantity of products in cart
   const handleDecrement = (id, count) => {
-    dispatch(updateData(id, --count, "63fa72e0f856d920bc745cf1"));
+    dispatch(updateData(id, --count, userData.user._id));
   };
 
   // for increment quantity of products in cart
   const handleIncreament = (id, count) => {
-    dispatch(updateData(id, ++count, "63fa72e0f856d920bc745cf1"));
+    dispatch(updateData(id, ++count, userData.user._id));
   };
 
   // for showing this when  data is not available
-  if (!cartData.success) {
+  if (cartData.length === 0 || cartData.success.length === 0) {
     return (
       <ChakraProvider>
         <Box>
@@ -89,7 +66,7 @@ export const CartBag = () => {
               borderRadius={"none"}
               _hover={{ border: "none", bg: "#e3e3e3" }}
             >
-              <Link to={"/"}>Continue Shopping</Link>
+              <Link to={"/productPage"}>Continue Shopping</Link>
             </Button>
             <Box>
               <Text m="2% 0">Accepted Payment Methods</Text>
@@ -186,9 +163,7 @@ export const CartBag = () => {
                     </button>
                     <button
                       className={style.blueColore}
-                      onClick={() =>
-                        handleLater(item.products, item.products.id)
-                      }
+                      onClick={() => handleLater(item.products, item._id)}
                     >
                       Save for later
                     </button>

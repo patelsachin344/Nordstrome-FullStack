@@ -5,6 +5,8 @@ import {
   Cart_Error,
   Cart_Updating,
   Cart_Deleting,
+  Cart_Adding,
+  Cart_AllDeleting,
 } from "./actionType";
 
 export const cartloading = () => {
@@ -21,7 +23,7 @@ export const cartSuccessing = (data) => {
 };
 export const cartAdding = () => {
   return {
-    type: Cart_Success,
+    type: Cart_Adding,
   };
 };
 export const cartUpdating = () => {
@@ -32,6 +34,11 @@ export const cartUpdating = () => {
 export const cartDelete = () => {
   return {
     type: Cart_Deleting,
+  };
+};
+export const cartAllDelete = () => {
+  return {
+    type: Cart_AllDeleting,
   };
 };
 
@@ -82,6 +89,16 @@ export const updateData = (cartId, count, userId) => (dispatch) => {
 
 export const deleteData = (cartId, userId) => (dispatch) => {
   fetch(`http://localhost:5000/carts/${cartId}`, {
+    method: "DELETE",
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      dispatch(cartDelete());
+      dispatch(getData(userId));
+    });
+};
+export const deleteAllData = (userId) => (dispatch) => {
+  fetch(`http://localhost:5000/carts/deleteAll/${userId}`, {
     method: "DELETE",
   })
     .then((res) => res.json())

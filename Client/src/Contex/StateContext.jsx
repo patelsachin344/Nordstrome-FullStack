@@ -1,4 +1,3 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { createContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -45,7 +44,7 @@ export const StateContextProvider = ({ children }) => {
 
     if (length < 20) {
       value = 1;
-      console.log(length);
+      // console.log(length);
     }
     return value;
   };
@@ -94,15 +93,6 @@ export const StateContextProvider = ({ children }) => {
   const [sortbyType, setSortbyType] = useState(
     searchparam.get("sortbyType")
   ); /*for get sortbyType */
-
-  let cartDataArray = JSON.parse(localStorage.getItem("CartData")) || [];
-  let LaterDataArray = JSON.parse(localStorage.getItem("laterBag")) || [];
-  const [bagLength, setBagLength] = useState(
-    cartDataArray.length
-  ); /*length of bag for show on carpage tab */
-  const [laterBagLen, setLaterBagLen] = useState(
-    LaterDataArray.length
-  ); /*length of laterBag for show on carpage tab */
 
   //   useeffects for  get data ---------------------------------------------
   const dispatch = useDispatch();
@@ -213,10 +203,6 @@ export const StateContextProvider = ({ children }) => {
     handleChange,
     handleChangeBrand,
     checkfilterBrand,
-    bagLength,
-    setBagLength,
-    laterBagLen,
-    setLaterBagLen,
   };
 
   return (

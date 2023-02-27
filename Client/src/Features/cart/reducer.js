@@ -5,6 +5,7 @@ const {
   Cart_Adding,
   Cart_Updating,
   Cart_Deleting,
+  Cart_AllDeleting,
 } = require("./actionType");
 
 const init = {
@@ -28,6 +29,9 @@ export const cartReducer = (state = init, action) => {
       return state;
     }
     case Cart_Deleting: {
+      return state;
+    }
+    case Cart_AllDeleting: {
       return state;
     }
     case Cart_Error: {

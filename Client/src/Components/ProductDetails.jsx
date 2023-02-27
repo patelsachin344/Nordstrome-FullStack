@@ -13,8 +13,8 @@ import {
   ChakraProvider,
   Center,
 } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import { BsFillHandbagFill } from "react-icons/bs";
 import { GoMail } from "react-icons/go";
 import { ImGift } from "react-icons/im";
@@ -36,43 +36,33 @@ import Footer from "./Footer/Footer";
 import ScrollToTop from "react-scroll-to-top";
 import { RiArrowUpSLine } from "react-icons/ri";
 import { AddShow } from "./AddShow";
+import { useDispatch, useSelector } from "react-redux";
+import { getOneData } from "../Redux/action";
+import { createData } from "../Features/cart/action";
 export default function ProductDetails() {
-  const [users, setUsers] = useState([{}]);
-  const [imgs, setImgs] = useState([]);
-  // const [size, setSize] = useState("");
-  // const [item, setItem] = useState({});
-  const id = useParams();
-  console.log(id.id);
+  const { product, loading, userData } = useSelector((state) => ({
+    product: state.product.product,
+    userData: state.loginState.userData,
+  }));
+  const { id } = useParams();
+
+  const dispatch = useDispatch();
+  // console.log(product, "from product ditails");
+  // console.log(id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const getUsers = async () => {
-    let response = await fetch(`http://localhost:4001/products/${id.id}`);
-    let data = await response.json();
-    data.count = 1;
-    setUsers(data);
-    console.log(data);
-    setImgs(data.images);
-    // setSize(data.sizes);
-  };
-  // console.log(imgs, "array");
-
   useEffect(() => {
-    getUsers();
-  }, []);
-
-  let storageLocal = JSON.parse(localStorage.getItem("CartData")) || [];
-
-  // storeLocal();
+    dispatch(getOneData(id));
+  }, [id.id]);
 
   const callLocal = (display) => {
-    console.log("onlclik", display);
-    storageLocal.push(display);
-    localStorage.setItem("CartData", JSON.stringify(storageLocal));
-    // storeLocal(display);
+    dispatch(createData(userData.user._id, display));
     onClose();
   };
-
+  if (loading) {
+    return <Box>Loading...</Box>;
+  }
   return (
     <ChakraProvider>
       <ScrollToTop
@@ -95,12 +85,13 @@ export default function ProductDetails() {
           {/* imagesSection Start -------------------------------------------------------*/}
           <Box className="imageSection">
             <Box className="imgBox">
-              {imgs.map((elem) => (
-                <Image className="imgTag" key={elem} src={elem.src} />
-              ))}
+              {product.images &&
+                product.images.map((elem) => (
+                  <Image className="imgTag" key={elem} src={elem.src} />
+                ))}
             </Box>
             <Box className="frontImage">
-              <Image src={users.searchImage} />
+              <Image src={product.searchImage} />
             </Box>
           </Box>
           {/* imagesSection End ------------------------------------------------------------------*/}
@@ -109,27 +100,33 @@ export default function ProductDetails() {
 
           <Box className="detailsSection">
             <Box className="detailsProductRating">
-              {new Array(5).fill("").map((_, i) => (
-                <StarIcon
-                  size={2}
-                  key={i}
-                  color={i < users.rating ? "teal.500" : "gray.300"}
-                />
-              ))}
+              {Math.floor(product.rating) === 5 ? (
+                <Box>&#9733;&#9733;&#9733;&#9733;&#9733;</Box>
+              ) : Math.floor(product.rating) === 4 ? (
+                <Box>&#9733;&#9733;&#9733;&#9733;&#9734;</Box>
+              ) : Math.floor(product.rating) === 3 ? (
+                <Box>&#9733;&#9733;&#9733;&#9734;&#9734;</Box>
+              ) : Math.floor(product.rating) === 2 ? (
+                <Box>&#9733;&#9733;&#9734;&#9734;&#9734;</Box>
+              ) : Math.floor(product.rating) === 1 ? (
+                <Box>&#9733;&#9734;&#9734;&#9734;&#9734;</Box>
+              ) : (
+                <Box>&#9734;&#9734;&#9734;&#9734;&#9734;</Box>
+              )}{" "}
             </Box>
             <Box className="detailsProductName">
-              <h1>{users.product}</h1>
+              <h1>{product.product}</h1>
             </Box>
-            <Box className="detailsProductBrand">{users.brand}</Box>
+            <Box className="detailsProductBrand">{product.brand}</Box>
             <Box className="detailsProductPrice">
-              <h1>INR {users.price}.00</h1>
+              <h1>INR {product.price}.00</h1>
             </Box>
             <Box className="detailsProductDiscount">
-              {users.discountDisplayLabel}
+              {product.discountDisplayLabel}
             </Box>
             <Box className="detailsProductMrp">
               <h3>
-                <strike> INR {users.mrp}.00</strike>
+                <strike> INR {product.mrp}.00</strike>
               </h3>
             </Box>
             <Box className="detailsProductDiscription">
@@ -187,36 +184,43 @@ export default function ProductDetails() {
                       <Box mr={5} width="65%">
                         {/* <Image width={300} src={users.searchImage} /> */}
                         <Carousel>
-                          {imgs.map((elem) => (
-                            <Image key={elem} src={elem.src} width="100%" />
-                          ))}
+                          {product.images &&
+                            product.images.map((elem) => (
+                              <Image key={elem} src={elem.src} width="100%" />
+                            ))}
                         </Carousel>
                       </Box>
                       <Box width="40%" mt="-10px">
                         <Box className="detailsProductRating">
-                          {new Array(5).fill("").map((_, i) => (
-                            <StarIcon
-                              size={20}
-                              key={i}
-                              color={i < users.rating ? "teal.500" : "gray.300"}
-                            />
-                          ))}
+                          {Math.floor(product.rating) === 5 ? (
+                            <Box>&#9733;&#9733;&#9733;&#9733;&#9733;</Box>
+                          ) : Math.floor(product.rating) === 4 ? (
+                            <Box>&#9733;&#9733;&#9733;&#9733;&#9734;</Box>
+                          ) : Math.floor(product.rating) === 3 ? (
+                            <Box>&#9733;&#9733;&#9733;&#9734;&#9734;</Box>
+                          ) : Math.floor(product.rating) === 2 ? (
+                            <Box>&#9733;&#9733;&#9734;&#9734;&#9734;</Box>
+                          ) : Math.floor(product.rating) === 1 ? (
+                            <Box>&#9733;&#9734;&#9734;&#9734;&#9734;</Box>
+                          ) : (
+                            <Box>&#9734;&#9734;&#9734;&#9734;&#9734;</Box>
+                          )}{" "}
                         </Box>
                         <Box fontSize={15} fontWeight="bold" mt={5}>
-                          <h1>{users.product}</h1>
+                          <h1>{product.product}</h1>
                         </Box>
                         <Box fontSize={20} fontWeight="bold" mt={5}>
-                          {users.brand}
+                          {product.brand}
                         </Box>
                         <Box className="detailsProductPrice">
-                          <h1>INR {users.price}.00</h1>
+                          <h1>INR {product.price}.00</h1>
                         </Box>
                         <Box className="detailsProductDiscount">
-                          {users.discountDisplayLabel}
+                          {product.discountDisplayLabel}
                         </Box>
                         <Box className="detailsProductMrp">
                           <h3>
-                            <strike> INR {users.mrp}.00</strike>
+                            <strike> INR {product.mrp}.00</strike>
                           </h3>
                         </Box>
                       </Box>
@@ -224,7 +228,7 @@ export default function ProductDetails() {
                   </ModalBody>
                   <ModalFooter justifyContent="center">
                     <Button
-                      onClick={() => callLocal(users)}
+                      onClick={() => callLocal(product)}
                       bg="orange"
                       width="100%"
                       color="black"

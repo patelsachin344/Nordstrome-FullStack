@@ -1,6 +1,5 @@
 import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 export const AddShow = () => {
   const { products } = useSelector((state) => state.product);

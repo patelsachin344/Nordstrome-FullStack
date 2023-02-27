@@ -8,7 +8,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Payment.css";
 import { BsCart3 } from "react-icons/bs";
@@ -17,21 +17,31 @@ import Footer from "./Footer/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAllData, getData } from "../Features/cart/action";
 
 export const Payment = () => {
+  const { cartData, userData } = useSelector((state) => ({
+    cartData: state.cart.cartData,
+    userData: state.loginState.userData,
+  }));
+  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
 
-  let getData = JSON.parse(localStorage.getItem("CartData")) || [];
+  useEffect(() => {
+    dispatch(getData(userData.user._id));
+  }, []);
   let totlePrice = JSON.parse(localStorage.getItem("totlePrice")) || 0;
-  console.log(totlePrice);
+  // console.log(totlePrice);
 
   const handle = useCallback(() => {
     if (value === "" || value2 === "" || value3 === "") {
       notify2();
     } else {
       notify();
+      dispatch(deleteAllData(userData.user._id));
     }
   }, [value, value2, value3]);
 
@@ -182,13 +192,17 @@ export const Payment = () => {
             ₹3,463
           </Flex>
 
-          {getData.map((elem) => {
-            <Box display="none">{(globalTotal += elem.price)}</Box>;
-          })}
+          {cartData.success &&
+            cartData.success.map((elem) => {
+              <Box display="none">
+                {" "}
+                {(globalTotal += +elem.products.price)}
+              </Box>;
+            })}
 
           <Flex className="totalPrice" as="Heading">
             TOTAL <Spacer />
-            <Flex as="p">{globalTotal}</Flex>
+            <Flex as="p">₹ {globalTotal}</Flex>
           </Flex>
 
           <hr />
@@ -203,35 +217,48 @@ export const Payment = () => {
             overflow={"scroll"}
             className="ProductDetaislSection"
           >
-            {getData.map((elem) => (
-              <Box>
-                <Image key={elem} width={20} src={elem.searchImage} />
-                <Box className="detailsProductRating">
-                  {new Array(5).fill("").map((_, i) => (
-                    <StarIcon
-                      size={2}
-                      key={i}
-                      color={i < elem.rating ? "teal.500" : "gray.300"}
-                    />
-                  ))}
+            {cartData.success &&
+              cartData.success.map((elem) => (
+                <Box>
+                  <Image
+                    key={elem}
+                    width={20}
+                    src={elem.products.searchImage}
+                  />
+                  <Box className="detailsProductRating">
+                    {Math.floor(elem.products.rating) === 5 ? (
+                      <Box>&#9733;&#9733;&#9733;&#9733;&#9733;</Box>
+                    ) : Math.floor(elem.products.rating) === 4 ? (
+                      <Box>&#9733;&#9733;&#9733;&#9733;&#9734;</Box>
+                    ) : Math.floor(elem.products.rating) === 3 ? (
+                      <Box>&#9733;&#9733;&#9733;&#9734;&#9734;</Box>
+                    ) : Math.floor(elem.products.rating) === 2 ? (
+                      <Box>&#9733;&#9733;&#9734;&#9734;&#9734;</Box>
+                    ) : Math.floor(elem.products.rating) === 1 ? (
+                      <Box>&#9733;&#9734;&#9734;&#9734;&#9734;</Box>
+                    ) : (
+                      <Box>&#9734;&#9734;&#9734;&#9734;&#9734;</Box>
+                    )}{" "}
+                  </Box>
+                  <Box mt={2} width="70%">
+                    <h1>{elem.products.product}</h1>
+                  </Box>
+                  <Box className="detailsProductBrand">
+                    {elem.products.brand}
+                  </Box>
+                  <Box className="detailsProductPrice">
+                    <h1>INR {elem.products.price}.00</h1>
+                  </Box>
+                  <Box className="detailsProductDiscount">
+                    {elem.products.discountDisplayLabel}
+                  </Box>
+                  <Box className="detailsProductMrp">
+                    <h3>
+                      <strike> INR {elem.products.mrp}.00</strike>
+                    </h3>
+                  </Box>
                 </Box>
-                <Box mt={2} width="70%">
-                  <h1>{elem.product}</h1>
-                </Box>
-                <Box className="detailsProductBrand">{elem.brand}</Box>
-                <Box className="detailsProductPrice">
-                  <h1>INR {elem.price}.00</h1>
-                </Box>
-                <Box className="detailsProductDiscount">
-                  {elem.discountDisplayLabel}
-                </Box>
-                <Box className="detailsProductMrp">
-                  <h3>
-                    <strike> INR {elem.mrp}.00</strike>
-                  </h3>
-                </Box>
-              </Box>
-            ))}
+              ))}
           </Grid>
         </Box>
       </Box>

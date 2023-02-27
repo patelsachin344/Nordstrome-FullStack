@@ -35,13 +35,10 @@ const intial = {
 };
 export const Login = () => {
   const [form, setForm] = useState(intial);
-  const [user, setUser] = useState([]);
   const [data, setData] = useState();
   const [err, setErr] = useState();
-  const [auth, setAuth] = useState();
 
   const { userData } = useSelector((state) => ({
-    users: state.loginState.users,
     userData: state.loginState.userData,
   }));
 
