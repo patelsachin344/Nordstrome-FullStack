@@ -1,12 +1,13 @@
 const User = require("../Models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
 
 const generateToken = (user) => {
   if (user.password) {
     delete user.password;
   }
-  return jwt.sign(user, "Now i am signed in");
+  return jwt.sign(user, process.env.SECRET_KEY);
 };
 
 const registerUser = async (body) => {

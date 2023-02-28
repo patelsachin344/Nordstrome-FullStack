@@ -56,7 +56,7 @@ export const getData = (id) => (dispatch) => {
 };
 
 export const createData = (id, item) => (dispatch) => {
-  console.log(item, "from cart action");
+  // console.log(item, "from cart action");
   fetch(`http://localhost:5000/carts/${id}`, {
     method: "POST",
     body: JSON.stringify({ products: item, userId: id }),

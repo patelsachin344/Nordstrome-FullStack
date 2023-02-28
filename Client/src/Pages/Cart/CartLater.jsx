@@ -31,7 +31,7 @@ export const CartLater = () => {
   };
 
   // for showing this when data is not available
-  if (!laterData.success) {
+  if (laterData.success === 0 || laterData.success.length === 0) {
     return (
       <Box>
         <Box m="3% 0">
@@ -44,7 +44,7 @@ export const CartLater = () => {
             borderRadius={"none"}
             _hover={{ border: "none", bg: "#e3e3e3" }}
           >
-            <Link>Continue Shopping</Link>
+            <Link to={"/productPage"}>Continue Shopping</Link>
           </Button>
           <Box>
             <Text m="2% 0">Accepted Payment Methods</Text>

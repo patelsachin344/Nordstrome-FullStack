@@ -39,7 +39,7 @@ export const CartBag = () => {
     dispatch(createLater(userData.user._id, item));
     dispatch(deleteData(cartId, userData.user._id));
   };
-  console.log(cartData, "CartData moved");
+  // console.log(cartData, "CartData moved");
 
   // for decreament quantity of products in cart
   const handleDecrement = (id, count) => {

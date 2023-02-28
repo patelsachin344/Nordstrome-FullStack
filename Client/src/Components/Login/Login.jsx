@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  DialogTitle,
+  // Button,
+  // Dialog,
+  // DialogActions,
+  // DialogContentText,
+  // DialogTitle,
   IconButton,
 } from "@mui/material";
 import { OutlinedInput } from "@mui/material";
@@ -17,7 +17,7 @@ import "./Login.css";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import DialogContent from '@mui/material/DialogContent';
-import DialogContent from "@mui/material/DialogContent";
+// import DialogContent from "@mui/material/DialogContent";
 import {
   loginLoading,
   loginError,
@@ -90,9 +90,9 @@ export const Login = () => {
         .then((res) => res.json())
         .then((res) => {
           dispatch(loginSuccess(res));
-          if (res.user) {
-            localStorage.setItem("userData", JSON.stringify(res.user));
-          }
+          // if (res.user) {
+          //   localStorage.setItem("userData", JSON.stringify(res.user));
+          // }
         })
         .catch((err) => {
           dispatch(loginError(err));

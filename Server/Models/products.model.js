@@ -34,6 +34,7 @@ const productModel = mongoose.model("products", productSchema);
 module.exports = productModel;
 
 // const productModel = require("./Models/products.model");
+// const fs = require("fs");
 // fs.readFile("./db.json", "utf-8", (err, data) => {
 //   if (err) throw err;
 //   console.log(data);

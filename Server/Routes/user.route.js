@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const dotenv = require("dotenv").config();
 
 const jwt = require("jsonwebtoken");
 const { registerUser, loginUser } = require("../Controllers/user.controller");
@@ -41,7 +42,7 @@ router.get("/logedin", (req, res) => {
   if (auth) {
     const token = auth.split(" ")[1];
     try {
-      jwt.verify(token, "Now i am signed in");
+      jwt.verify(token, process.env.SECRET_KEY);
       const user = jwt.decode(token);
       res.status(200).json({ user });
     } catch (error) {

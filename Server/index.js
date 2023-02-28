@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const connect = require("./Db/connect");
+const dotenv = require("dotenv").config();
 const productRouter = require("./Routes/product.route");
 const userRouter = require("./Routes/user.route");
 const cartRouter = require("./Routes/cart.route");
@@ -16,12 +17,15 @@ app.use("/users", userRouter);
 app.use("/carts", cartRouter);
 app.use("/laters", laterRouter);
 
+const Port = +process.env.PORT || 8080;
+
+console.log(Port);
 connect()
   .then(() => {
     app.listen(5000, () => {
-      console.log("listening on 5000");
+      console.log(`listening on ${Port}`);
     });
   })
   .catch((err) => {
-    console.error("Error listening" + err.message);
+    console.error("Error listening" + err);
   });

@@ -59,11 +59,11 @@ export const Product = () => {
   } = useContext(StateContext);
 
   // products.map((ele) => (ele.count = 1));
-  console.log(products);
+  // console.log(products);
   // function for sorting
   const handleChange = (e) => {
     const { value, name } = e.target;
-    console.log(name, " ", value);
+    // console.log(name, " ", value);
     setSelectValuue(value);
 
     if (value === "rating") {
