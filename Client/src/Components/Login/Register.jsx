@@ -64,7 +64,7 @@ export const Register = () => {
     // } else if (form.password.length < 6) {
     //   setPassword(false);
     // } else {
-    fetch("http://localhost:5000/users/register", {
+    fetch("nordstrome-fullstack-production.up.railway.app/users/register", {
       method: "POST",
       body: JSON.stringify(form),
       headers: {

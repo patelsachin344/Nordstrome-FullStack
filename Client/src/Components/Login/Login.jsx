@@ -45,7 +45,7 @@ export const Login = () => {
   const dispatch = useDispatch();
 
   const login = () => {
-    fetch("http://localhost:5000/users/login", {
+    fetch("nordstrome-fullstack-production-d523.up.railway.app/users/login", {
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -81,12 +81,15 @@ export const Login = () => {
   function getUsers() {
     dispatch(loginLoading());
     if (data) {
-      fetch("http://localhost:5000/users/logedin", {
-        method: "GET",
-        headers: {
-          Authorization: autho,
-        },
-      })
+      fetch(
+        "nordstrome-fullstack-production-d523.up.railway.app/users/logedin",
+        {
+          method: "GET",
+          headers: {
+            Authorization: autho,
+          },
+        }
+      )
         .then((res) => res.json())
         .then((res) => {
           dispatch(loginSuccess(res));

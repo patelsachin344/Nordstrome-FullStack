@@ -42,7 +42,7 @@ export const laterErroring = () => {
 };
 
 export const getLater = (id) => (dispatch) => {
-  fetch(`http://localhost:5000/laters/${id}`)
+  fetch(`nordstrome-fullstack-production.up.railway.app/laters/${id}`)
     .then((res) => res.json())
     .then((res) => {
       dispatch(laterSuccessing(res));
@@ -52,7 +52,7 @@ export const getLater = (id) => (dispatch) => {
 
 export const createLater = (id, item) => (dispatch) => {
   console.log(item, "from Later action");
-  fetch(`http://localhost:5000/laters/${id}`, {
+  fetch(`nordstrome-fullstack-production.up.railway.app/${id}`, {
     method: "POST",
     body: JSON.stringify({ products: item, userId: id }),
     headers: {
@@ -83,7 +83,7 @@ export const createLater = (id, item) => (dispatch) => {
 // };
 
 export const deleteLater = (LaterId, userId) => (dispatch) => {
-  fetch(`http://localhost:5000/laters/${LaterId}`, {
+  fetch(`nordstrome-fullstack-production.up.railway.app/${LaterId}`, {
     method: "DELETE",
   })
     .then((res) => res.json())
