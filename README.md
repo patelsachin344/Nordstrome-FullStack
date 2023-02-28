@@ -29,15 +29,9 @@ I am a student of a Full Stack Web Development course offered by Masai School. I
 <img src="https://i.postimg.cc/j5RsJN4q/signup-Page.png"/>
 
 ## For going product page 
--First go to navbar 
--Choose Sale nav tab
-
-[navbar](file:///home/lenovo/Pictures/Screenshots/Screenshot%20from%202023-03-01%2004-15-12.png)
-
--In sale choose All Sale option
-
-
-
+- First go to navbar 
+- Choose Sale nav tab
+- In sale choose All Sale option
 
 ## Product Page
 
