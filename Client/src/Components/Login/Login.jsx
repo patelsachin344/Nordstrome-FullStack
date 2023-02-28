@@ -45,13 +45,16 @@ export const Login = () => {
   const dispatch = useDispatch();
 
   const login = () => {
-    fetch("nordstrome-fullstack-production-d523.up.railway.app/users/login", {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      "https://nordstrome-fullstack-production-d523.up.railway.app/users/login",
+      {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((res) => setData(res))
       .catch((error) => setErr(error));
@@ -59,8 +62,6 @@ export const Login = () => {
   useEffect(() => {
     getUsers();
   }, [data]);
-
-  // console.log(userData, "UserData");
 
   useEffect(() => {
     if (data) {
@@ -82,7 +83,7 @@ export const Login = () => {
     dispatch(loginLoading());
     if (data) {
       fetch(
-        "nordstrome-fullstack-production-d523.up.railway.app/users/logedin",
+        "https://nordstrome-fullstack-production-d523.up.railway.app/users/logedin",
         {
           method: "GET",
           headers: {
@@ -93,9 +94,6 @@ export const Login = () => {
         .then((res) => res.json())
         .then((res) => {
           dispatch(loginSuccess(res));
-          // if (res.user) {
-          //   localStorage.setItem("userData", JSON.stringify(res.user));
-          // }
         })
         .catch((err) => {
           dispatch(loginError(err));
@@ -127,7 +125,6 @@ export const Login = () => {
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
     setForm({ ...form, [prop]: event.target.value });
-    // findUser();
   };
 
   const handleClickShowPassword = () => {

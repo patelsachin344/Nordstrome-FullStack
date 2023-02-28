@@ -1,10 +1,10 @@
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  // Button,
+  // Dialog,
+  // DialogActions,
+  // DialogContent,
+  // DialogContentText,
+  // DialogTitle,
   IconButton,
 } from "@mui/material";
 import React, { useEffect, useRef } from "react";
@@ -64,13 +64,17 @@ export const Register = () => {
     // } else if (form.password.length < 6) {
     //   setPassword(false);
     // } else {
-    fetch("nordstrome-fullstack-production.up.railway.app/users/register", {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      "https://nordstrome-fullstack-production-d523.up.railway.app/users/register",
+      {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         setData(res);

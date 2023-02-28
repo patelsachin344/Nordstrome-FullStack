@@ -98,7 +98,7 @@ export const StateContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     let url = getUrl(
-      `http://localhost:5000/products?limit=20&page=${page}`,
+      `https://nordstrome-fullstack-production-d523.up.railway.app/products?limit=20&page=${page}`,
       sortby,
       sortbyType,
       genderName,
