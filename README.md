@@ -2,11 +2,11 @@
 
 ## Task
 
-My task is that I have to create a pixel perfext clone of the famous E-ecommerce website Nordstrom.com with basic functionalities and good looking user interface.
+My task is that I have to create a pixel perfect clone of the famous E-ecommerce website Nordstrom.com with basic functionalities and good looking user interface.This is a solo project.
 
 ## Making
 
-I am a student of a Full Stack Web Development course offered by Masai School. I was choose a task to create a pixel-perfect clone of Nordstrom official website.
+I am a student of a Full Stack Web Development course offered by Masai School. I was choose a task to create a pixel-perfect clone of Nordstrom official website.This is a solo project.
 
 \*\*Deploy Link :- https://nordstrome-full-stack.netlify.app/
 
