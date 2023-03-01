@@ -2,11 +2,31 @@
 
 ## Task
 
-My task is that I have to create a pixel perfect clone of the famous E-ecommerce website Nordstrom.com with basic functionalities and good looking user interface.This is a solo project.
+My task is that I have to create a pixel perfect clone of the famous E-ecommerce website Nordstrom.com with basic functionalities and good looking user interface.
+
+This is a solo project.
 
 ## Making
 
-I am a student of a Full Stack Web Development course offered by Masai School. I was choose a task to create a pixel-perfect clone of Nordstrom official website.This is a solo project.
+I am a student of a Full Stack Web Development course offered by Masai School. I was choose a task to create a pixel-perfect clone of Nordstrom official website.
+This is a solo project.
+
+## Functionality
+
+- User can create a new account.
+- User can login with created account.
+- User can see some special product in homepage.
+- User can go in product page and see all products available in this website.
+- User can quickview the product and add to cart also.
+- User can go specific product with full details of product and cheackout the product that is redirect to cart page.
+- User can go cart and see all products which are user added in cart.
+- User can increase the quantity of products and decrease.
+- User can move product in to save later page that can save product.
+  User can move product in cart page to save later page.
+- User can checkout the products which are present in cart that is redirect to payment page.
+- User can see all amount of products which is also include charges and see all carts products.
+- User should be able to fill card details and after that place the order.
+- After Place the order cart products will be deleted in to cart page and redirect to homepage page
 
 \*\*Deploy Link :- https://nordstrome-full-stack.netlify.app/
 
@@ -28,8 +48,9 @@ I am a student of a Full Stack Web Development course offered by Masai School. I
 
 <img src="https://i.postimg.cc/j5RsJN4q/signup-Page.png"/>
 
-## For going product page 
-- First go to navbar 
+## For going product page
+
+- First go to navbar
 - Choose Sale nav tab
 - In sale choose All Sale option
 
@@ -51,7 +72,7 @@ I am a student of a Full Stack Web Development course offered by Masai School. I
 - VS CODE
 - NPM
 - NETLIFY
-- RENDER
+- RAILWAY
 
 **TECH STACKs**
 
