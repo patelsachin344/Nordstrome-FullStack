@@ -42,9 +42,7 @@ export const laterErroring = () => {
 };
 
 export const getLater = (id) => (dispatch) => {
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/laters/${id}`
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/laters/${id}`)
     .then((res) => res.json())
     .then((res) => {
       dispatch(laterSuccessing(res));
@@ -53,17 +51,14 @@ export const getLater = (id) => (dispatch) => {
 };
 
 export const createLater = (id, item) => (dispatch) => {
-  console.log(item, "from Later action");
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/laters/${id}`,
-    {
-      method: "POST",
-      body: JSON.stringify({ products: item, userId: id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  // console.log(item, "from Later action");
+  fetch(`https://nordstrome-fullstack-project.onrender.com/laters/${id}`, {
+    method: "POST",
+    body: JSON.stringify({ products: item, userId: id }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       dispatch(laterAdding());
@@ -88,12 +83,9 @@ export const createLater = (id, item) => (dispatch) => {
 // };
 
 export const deleteLater = (LaterId, userId) => (dispatch) => {
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/laters/${LaterId}`,
-    {
-      method: "DELETE",
-    }
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/laters/${LaterId}`, {
+    method: "DELETE",
+  })
     .then((res) => res.json())
     .then((res) => {
       dispatch(laterDelete());

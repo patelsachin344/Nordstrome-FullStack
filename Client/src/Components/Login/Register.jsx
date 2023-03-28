@@ -64,17 +64,14 @@ export const Register = () => {
     // } else if (form.password.length < 6) {
     //   setPassword(false);
     // } else {
-    fetch(
-      "https://nordstrome-fullstack-production-d523.up.railway.app/users/register",
-      {
-        method: "POST",
-        body: JSON.stringify(form),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-      }
-    )
+    fetch("https://nordstrome-fullstack-project.onrender.com/users/register", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+    })
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -88,8 +85,8 @@ export const Register = () => {
     alert(data.error);
     setData("");
   }
-  console.log(form);
-  console.log(data.error);
+  // console.log(form);
+  // console.log(data.error);
 
   const [values, setValues] = React.useState({
     password: "",

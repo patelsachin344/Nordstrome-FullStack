@@ -45,18 +45,18 @@ export const Login = () => {
   const dispatch = useDispatch();
 
   const login = () => {
-    fetch(
-      "https://nordstrome-fullstack-production-d523.up.railway.app/users/login",
-      {
-        method: "POST",
-        body: JSON.stringify(form),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch("https://nordstrome-fullstack-project.onrender.com/users/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
-      .then((res) => setData(res))
+      .then((res) => {
+        setData(res);
+        getUsers();
+      })
       .catch((error) => setErr(error));
   };
   useEffect(() => {
@@ -81,16 +81,14 @@ export const Login = () => {
 
   function getUsers() {
     dispatch(loginLoading());
+
     if (data) {
-      fetch(
-        "https://nordstrome-fullstack-production-d523.up.railway.app/users/logedin",
-        {
-          method: "GET",
-          headers: {
-            Authorization: autho,
-          },
-        }
-      )
+      fetch("https://nordstrome-fullstack-project.onrender.com/users/logedin", {
+        method: "GET",
+        headers: {
+          Authorization: autho,
+        },
+      })
         .then((res) => res.json())
         .then((res) => {
           dispatch(loginSuccess(res));

@@ -45,9 +45,7 @@ export const getData = (url, setLength) => (dispatch) => {
 
 export const getOneData = (id) => (dispatch) => {
   dispatch(getloaddata());
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/products/${id}`
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/products/${id}`)
     .then((res) => res.json())
     .then((res) => {
       // console.log(res, "from aciton product");

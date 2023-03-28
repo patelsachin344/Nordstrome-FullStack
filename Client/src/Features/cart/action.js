@@ -49,9 +49,7 @@ export const cartErroring = () => {
 };
 
 export const getData = (id) => (dispatch) => {
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/carts/${id}`
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/carts/${id}`)
     .then((res) => res.json())
     .then((res) => dispatch(cartSuccessing(res)))
     .catch(() => dispatch(cartErroring));
@@ -59,16 +57,13 @@ export const getData = (id) => (dispatch) => {
 
 export const createData = (id, item) => (dispatch) => {
   // console.log(item, "from cart action");
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/carts/${id}`,
-    {
-      method: "POST",
-      body: JSON.stringify({ products: item, userId: id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/carts/${id}`, {
+    method: "POST",
+    body: JSON.stringify({ products: item, userId: id }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       dispatch(cartAdding());
@@ -78,30 +73,24 @@ export const createData = (id, item) => (dispatch) => {
 };
 
 export const updateData = (cartId, count, userId) => (dispatch) => {
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/carts/${cartId}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({ count }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/carts/${cartId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ count }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
     .then((res) => res.json())
-    .then((res) => {
+    .then(() => {
       dispatch(cartUpdating());
       dispatch(getData(userId));
     });
 };
 
 export const deleteData = (cartId, userId) => (dispatch) => {
-  fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/carts/${cartId}`,
-    {
-      method: "DELETE",
-    }
-  )
+  fetch(`https://nordstrome-fullstack-project.onrender.com/carts/${cartId}`, {
+    method: "DELETE",
+  })
     .then((res) => res.json())
     .then((res) => {
       dispatch(cartDelete());
@@ -110,7 +99,7 @@ export const deleteData = (cartId, userId) => (dispatch) => {
 };
 export const deleteAllData = (userId) => (dispatch) => {
   fetch(
-    `https://nordstrome-fullstack-production-d523.up.railway.app/carts/deleteAll/${userId}`,
+    `https://nordstrome-fullstack-project.onrender.com/carts/deleteAll/${userId}`,
     {
       method: "DELETE",
     }

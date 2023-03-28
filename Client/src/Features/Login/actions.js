@@ -54,10 +54,9 @@ export const getUserLoading = () => {
   };
 };
 
-export const getUserSuccess = (data) => {
+export const getUserSuccess = () => {
   return {
     type: GET_USER_SUCCESS,
-    payload: data,
   };
 };
 
@@ -65,4 +64,21 @@ export const getUserError = () => {
   return {
     type: GET_USER_ERROR,
   };
+};
+
+export const login_user = (form) => (dispatch) => {
+  dispatch(getUserLoading());
+  fetch("https://nordstrome-fullstack-project.onrender.com/users/login", {
+    method: "POST",
+    body: JSON.stringify(form),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      localStorage.setItem("token", JSON.stringify(res));
+      dispatch(getUserSuccess());
+    })
+    .catch((error) => dispatch(loginUserError()));
 };
