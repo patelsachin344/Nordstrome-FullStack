@@ -13,20 +13,19 @@ This is a solo project.
 
 ## Functionality
 
-- User can create a new account.
-- User can login with created account.
-- User can see some special product in homepage.
-- User can go in product page and see all products available in this website.
-- User can quickview the product and add to cart also.
-- User can go specific product with full details of product and cheackout the product that is redirect to cart page.
-- User can go cart and see all products which are user added in cart.
-- User can increase the quantity of products and decrease.
-- User can move product in to save later page that can save product.
-  User can move product in cart page to save later page.
-- User can checkout the products which are present in cart that is redirect to payment page.
-- User can see all amount of products which is also include charges and see all carts products.
-- User should be able to fill card details and after that place the order.
-- After Place the order cart products will be deleted in to cart page and redirect to homepage page
+- Users can create a new account.
+- Users can log in with a created account.
+- Users can see some special products on the homepage.
+- Users can go to the product page and see all products available on this website.
+- Users can quickly view the product and add it to the cart also.
+- Users can go specific product with full details of the product and check out the product that is redirecting to the cart page.
+- Users can go cart to and see all products which are user-added in the cart.
+- Users can increase the number of products or decrease them.
+- Users can move products in to save the later page that can save products. Users can move products to the cart page to save the later page.
+- Users can checkout the products which are present in a cart that is redirects to the payment page.
+- Users can see all amount of the products which also include charges and see all cart products.
+- Users should be able to fill in card details and after that place the order.
+After Placing the order cart products will be deleted from to cart page and redirected to the homepage page.
 
 \*\*Deploy Link :- https://nordstrome-full-stack.netlify.app/
 
