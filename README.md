@@ -71,7 +71,7 @@ After Placing the order cart products will be deleted from to cart page and redi
 - VS CODE
 - NPM
 - NETLIFY
-- RAILWAY
+- RENDER
 
 **TECH STACKs**
 
